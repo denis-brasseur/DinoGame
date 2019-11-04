@@ -1,0 +1,2 @@
+DinoGame :
+	Un dinosaure cours (par scrolling horizontal) et saute (et retombe) par dessus des obstacles dans une forêt.
