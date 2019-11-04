@@ -32,15 +32,15 @@ if __name__ == "__main__" :
 	fenetre = pygame.display.set_mode((0,0))
 	
 	img_dino = pygame.image.load(chemin+"/animals/dinosaur/png/dinosaur-01.png").convert_alpha()
-	img_dino = pygame.transform.scale(img_dino,(img_dino.get_width()//4,img_dino.get_height()//4))
+	img_dino = pygame.transform.smoothscale(img_dino,(img_dino.get_width()//4,img_dino.get_height()//4))
 	img_fond = pygame.image.load(chemin+"/forest/forest_constructor_kit_READY/10_backgrounds/10_backgrounds-01.jpg").convert()
+	img_fond = pygame.transform.smoothscale(img_fond,(img_fond.get_width()//4,img_fond.get_height()//4))
 	Dino = pygame.sprite.RenderUpdates()
 	Dino.add(dino(img_dino,(0,0)))
 	
-	fenetre = pygame.display.set_mode((img_fond.get_width()//4,img_fond.get_height()//4),RESIZABLE)
+	fenetre = pygame.display.set_mode(img_fond.get_size(),RESIZABLE)
 	fenetre.blit(img_fond,(0,0))
 	Dino.draw(fenetre)
-	#fenetre.blit(img_dino,(0,0))
 	
 	pygame.display.flip()
 	
@@ -57,10 +57,10 @@ if __name__ == "__main__" :
 				if event.key == K_UP :
 					Dino.sprites()[0].impulsion()
 			
-			#fenetre.blit(img_dino,(0,-dy))
 		Dino.sprites()[0].move(fenetre)
 		fenetre.blit(img_fond,(0,0))
 		Dino.draw(fenetre)
+		fenetre.blit(img_obstacle,(100,0))
 		pygame.display.flip()
 	#pygame.time.wait(10000)
 	pygame.display.quit()
