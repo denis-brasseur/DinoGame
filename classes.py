@@ -1,15 +1,15 @@
 import pygame
 from pygame.locals import *
-
-chemin = "/home/arinfo/Documents/DinoGame/src"
-cst_saut = 50
-cst_gravite = 10
+from constantes import *
+#chemin = "/home/arinfo/Documents/DinoGame/src"
+#cst_saut = 50
+#cst_gravite = 10
 
 class dino (pygame.sprite.Sprite) :
 	def __init__(self, image,coordonnees) :
 		pygame.sprite.Sprite.__init__(self)
 		self.image = image
-		self.rect = Rect(coordonnees,image.get_size())
+		self.rect = Rect(coordonnees,(image.get_width()-35,image.get_height()))
 		self.vitesse_y = 0
 		
 	def impulsion(self,limites=None) :
@@ -57,12 +57,12 @@ if __name__ == "__main__" :
 	img_fond = pygame.transform.smoothscale(img_fond,(img_fond.get_width()//4,img_fond.get_height()//4))
 	fenetre = pygame.display.set_mode(img_fond.get_size(),RESIZABLE)
 	
-	img_obstacle = pygame.image.load(chemin+"/forest/icon-pot/png/pot-01.png").convert_alpha()
+	img_obstacle = pygame.image.load(chemin+"/obstacle_1.png").convert_alpha()
 	img_obstacle = pygame.transform.smoothscale(img_obstacle,(img_obstacle.get_width()//10,img_obstacle.get_height()//10))
 	LObstacle = pygame.sprite.RenderUpdates()
 	LObstacle.add(Obstacle(img_obstacle,(fenetre.get_width()-img_obstacle.get_width(),fenetre.get_height()-img_obstacle.get_height())))
 	
-	img_dino = pygame.image.load(chemin+"/animals/dinosaur/png/dinosaur-01.png").convert_alpha()
+	img_dino = pygame.image.load(chemin+"/dinosaure_1.png").convert_alpha()
 	img_dino = pygame.transform.smoothscale(img_dino,(img_dino.get_width()//4,img_dino.get_height()//4))
 	Dino  = pygame.sprite.RenderUpdates(dino(img_dino,(img_dino.get_width(),img_fond.get_height()-img_dino.get_height())))
 	
@@ -74,7 +74,7 @@ if __name__ == "__main__" :
 	
 	timer = pygame.time.Clock()
 	sortir = False
-	dx=-1
+	#dx=-1
 	while not sortir :
 		timer.tick(30)
 		for event in pygame.event.get() :
