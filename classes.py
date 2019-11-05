@@ -1,3 +1,4 @@
+from random import randrange
 import pygame
 from pygame.locals import *
 from constantes import *
@@ -60,24 +61,28 @@ if __name__ == "__main__" :
 	
 	img_obstacle = pygame.image.load(chemin+"/obstacle_1.png").convert_alpha()
 	img_obstacle = pygame.transform.smoothscale(img_obstacle,(img_obstacle.get_width()//10,img_obstacle.get_height()//10))
-	LObstacle = pygame.sprite.RenderUpdates()
-	LObstacle.add(Obstacle(img_obstacle,(fenetre.get_width()-img_obstacle.get_width(),fenetre.get_height()-img_obstacle.get_height())))
+	lObstacle = pygame.sprite.RenderUpdates()
+	#lObstacle.add(Obstacle(img_obstacle,(fenetre.get_width()-img_obstacle.get_width(),fenetre.get_height()-img_obstacle.get_height())))
 	
 	img_dino = pygame.image.load(chemin+"/dinosaure_1.png").convert_alpha()
 	img_dino = pygame.transform.smoothscale(img_dino,(img_dino.get_width()//4,img_dino.get_height()//4))
 	perso = Dino(img_dino,(img_dino.get_width(),img_fond.get_height()-img_dino.get_height()))
 	
 	fenetre.blit(img_fond,(0,0))
-	LObstacle.draw(fenetre)
+	lObstacle.draw(fenetre)
 	perso.draw(fenetre)
 	
 	pygame.display.flip()
 	
 	timer = pygame.time.Clock()
 	sortir = False
+	pygame.time.set_timer(USEREVENT,1000)
 	while not sortir :
 		collision = False
 		timer.tick(30)
+		## créer, ou pas, un nouvel obstacle
+		
+		## attendre un evenement
 		for event in pygame.event.get() :
 			if event.type ==QUIT:
 				sortir = True
@@ -85,21 +90,28 @@ if __name__ == "__main__" :
 			if event.type == KEYDOWN:
 				if event.key == K_UP:
 					perso.impulsion(fenetre)
-		
+			if event.type == USEREVENT:
+				if randrange(3)==0 and len(lObstacle.sprites())<2:
+					lObstacle.add(Obstacle(img_obstacle,(fenetre.get_width()-img_obstacle.get_width(),fenetre.get_height()-img_obstacle.get_height())))
+		## bouger les sprites
 		perso.move(fenetre)
-		for o in LObstacle.sprites() :
+		for o in lObstacle.sprites() :
 			o.move(dx)
 			if o.is_out(fenetre):
-				LObstacle.remove(o)
-		if len(pygame.sprite.spritecollide(perso,LObstacle,False))>0:
+				lObstacle.remove(o)
+		## tester l'existence d'une collision
+		if len(pygame.sprite.spritecollide(perso,lObstacle,False))>0:
 			collision = True
+		## dessiner les objets
 		fenetre.blit(img_fond,(0,0))
-		LObstacle.draw(fenetre)
+		lObstacle.draw(fenetre)
 		perso.draw(fenetre)
 		pygame.display.flip()
+		## si collision, freeze et quitte
 		if collision :
 			sortir = True
 			pygame.time.wait(5000)
+	
 	#pygame.time.wait(10000)
 	pygame.display.quit()
 	
