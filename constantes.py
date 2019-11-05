@@ -3,5 +3,7 @@ local = os.getcwd()
 chemin = local[:local.rindex("/")]+"/src"
 cst_saut = 100
 cst_gravite = 10
-dx = -5
+dx = -10
+
+
 
