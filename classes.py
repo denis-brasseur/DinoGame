@@ -1,15 +1,13 @@
 import pygame
 from pygame.locals import *
 from constantes import *
-#chemin = "/home/arinfo/Documents/DinoGame/src"
-#cst_saut = 50
-#cst_gravite = 10
 
-class dino (pygame.sprite.Sprite) :
+
+class Dino (pygame.sprite.Sprite) :
 	def __init__(self, image,coordonnees) :
 		pygame.sprite.Sprite.__init__(self)
 		self.image = image
-		self.rect = Rect(coordonnees,(image.get_width()-35,image.get_height()))
+		self.rect = Rect(coordonnees,(image.get_width()-2*cst_tolerance,image.get_height()))
 		self.vitesse_y = 0
 		
 	def impulsion(self,limites=None) :
@@ -29,6 +27,9 @@ class dino (pygame.sprite.Sprite) :
 				self.vitesse_y +=cst_gravite
 		else:
 			self.vitesse_y +=cst_gravite
+			
+	def draw(self,conteneur):
+			conteneur.blit(self.image,(self.rect.left-cst_tolerance,self.rect.top))
 
 class Obstacle (pygame.sprite.Sprite) :
 	def __init__(self, image,coordonnees) :
@@ -64,18 +65,18 @@ if __name__ == "__main__" :
 	
 	img_dino = pygame.image.load(chemin+"/dinosaure_1.png").convert_alpha()
 	img_dino = pygame.transform.smoothscale(img_dino,(img_dino.get_width()//4,img_dino.get_height()//4))
-	Dino  = pygame.sprite.RenderUpdates(dino(img_dino,(img_dino.get_width(),img_fond.get_height()-img_dino.get_height())))
+	perso = Dino(img_dino,(img_dino.get_width(),img_fond.get_height()-img_dino.get_height()))
 	
 	fenetre.blit(img_fond,(0,0))
 	LObstacle.draw(fenetre)
-	Dino.draw(fenetre)
+	perso.draw(fenetre)
 	
 	pygame.display.flip()
 	
 	timer = pygame.time.Clock()
 	sortir = False
-	#dx=-1
 	while not sortir :
+		collision = False
 		timer.tick(30)
 		for event in pygame.event.get() :
 			if event.type ==QUIT:
@@ -83,20 +84,22 @@ if __name__ == "__main__" :
 				break
 			if event.type == KEYDOWN:
 				if event.key == K_UP:
-					Dino.sprites()[0].impulsion(fenetre)
+					perso.impulsion(fenetre)
 		
-		Dino.sprites()[0].move(fenetre)
+		perso.move(fenetre)
 		for o in LObstacle.sprites() :
 			o.move(dx)
 			if o.is_out(fenetre):
 				LObstacle.remove(o)
-		if len(pygame.sprite.spritecollide(Dino.sprites()[0],LObstacle,False))>0:
-			pygame.time.wait(10000)
-			sortir = True
+		if len(pygame.sprite.spritecollide(perso,LObstacle,False))>0:
+			collision = True
 		fenetre.blit(img_fond,(0,0))
 		LObstacle.draw(fenetre)
-		Dino.draw(fenetre)
+		perso.draw(fenetre)
 		pygame.display.flip()
+		if collision :
+			sortir = True
+			pygame.time.wait(5000)
 	#pygame.time.wait(10000)
 	pygame.display.quit()
 	
