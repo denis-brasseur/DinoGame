@@ -76,12 +76,11 @@ if __name__ == "__main__" :
 	
 	timer = pygame.time.Clock()
 	sortir = False
+	## toutes les secondes, generer un event de type USEREVENT
 	pygame.time.set_timer(USEREVENT,1000)
 	while not sortir :
 		collision = False
 		timer.tick(30)
-		## créer, ou pas, un nouvel obstacle
-		
 		## attendre un evenement
 		for event in pygame.event.get() :
 			if event.type ==QUIT:
@@ -90,6 +89,7 @@ if __name__ == "__main__" :
 			if event.type == KEYDOWN:
 				if event.key == K_UP:
 					perso.impulsion(fenetre)
+			## créer, ou pas, un nouvel obstacle
 			if event.type == USEREVENT:
 				if randrange(3)==0 and len(lObstacle.sprites())<2:
 					lObstacle.add(Obstacle(img_obstacle,(fenetre.get_width()-img_obstacle.get_width(),fenetre.get_height()-img_obstacle.get_height())))
