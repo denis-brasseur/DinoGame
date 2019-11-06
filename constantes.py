@@ -16,5 +16,5 @@ dx = -(largeur_fenetre//100)
 cst_tolerance = (largeur_fenetre//10)//3
 max_obstacles = 3
 taille_lettres = 50
-namefont = 'Arial'
+namefont = 'ComicSansMS'
 acceleration = 1

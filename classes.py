@@ -77,7 +77,7 @@ class Niveau :
 				self.lobstacles.add(Obstacle())
 		elif event.type == KEYDOWN :
 			if event.key == K_UP :
-				self.dinosaure.impulsion()
+				self.dinosaure.impulsion(fenetre)
 		return False
 	
 	def draw(self,conteneur):
@@ -103,7 +103,26 @@ class Niveau :
 		else: 
 			return False
 		
-
+class Initial :
+	def __init__(self):
+		self.highscore = 0
+		self.fond = pygame.Surface((largeur_fenetre,hauteur_fenetre))
+		self.fond.fill((255,255,255))
+		pygame.font.init()
+		self.font = pygame.font.Font(pygame.font.match_font(namefont),taille_lettres)
+	
+	def draw(self,fenetre):
+		texte1 = self.font.render("meilleur score = "+str(self.highscore),True,(0,0,0))
+		texte2 = self.font.render("Pour rejouer appuyez sur Entrée",True,(0,0,0))
+		fenetre.blit(self.fond,(0,0))
+		fenetre.blit(texte1,((largeur_fenetre//2)-(texte1.get_width()//2),taille_lettres))
+		fenetre.blit(texte2,((largeur_fenetre//2)-(texte2.get_width()//2),3*(hauteur_fenetre//4)))
+		
+	def set_highscore(self,score):
+		if score>self.highscore :
+				self.highscore = score
+		
+	
 
 if __name__ == "__main__" :
 	print("hello")
