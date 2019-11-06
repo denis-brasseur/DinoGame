@@ -9,6 +9,7 @@ if __name__ == "__main__" :
 	fenetre = pygame.display.set_mode((0,0))
 	
 	niveau = Niveau(fenetre)
+	niveau.draw(fenetre)
 	pygame.display.flip()
 	
 	pygame.time.set_timer(USEREVENT,1000)

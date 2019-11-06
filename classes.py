@@ -56,21 +56,17 @@ class Niveau :
 		## charger et  reduire l'image de fond
 		self.fond = pygame.image.load(chemin+fond).convert()
 		self.fond = pygame.transform.smoothscale(self.fond,(largeur_fenetre,hauteur_fenetre))
-		
 		## construire le dinosaure
 		self.dinosaure = Dino((largeur_fenetre//3,hauteur_fenetre))
-		
-		## construire les osbtacles
+		## construire les obstacles
 		self.lobstacles = pygame.sprite.RenderUpdates()
-		
+		## construire le score
+		self.score = 0
 		## recreer la fenetre
 		fenetre = pygame.display.set_mode((largeur_fenetre,hauteur_fenetre),RESIZABLE)
-		
-		## dessiner le fond
-		fenetre.blit(self.fond,(0,0))
-		## dessiner les objets
-		self.dinosaure.draw(fenetre)
-		self.lobstacles.draw(fenetre)
+		## construire une Font pour afficher le score
+		pygame.font.init()
+		self.font = pygame.font.Font(pygame.font.match_font(namefont),taille_lettres)
 		
 	def mise_a_jour(self,event,fenetre):
 		collision = False
@@ -88,14 +84,19 @@ class Niveau :
 		conteneur.blit(self.fond,(0,0))
 		self.dinosaure.draw(conteneur)
 		self.lobstacles.draw(conteneur)
+		conteneur.blit(self.font.render(str(self.score),True,(0,0,0)),(5,5))
 		
 	def move(self,fenetre):
+		global dx
+		self.score -= dx//10
 		self.dinosaure.move(fenetre)
 		for o in self.lobstacles.sprites() :
 			o.move(dx)
 			if o.is_out(fenetre) :
 				self.lobstacles.remove(o)
-				
+		if self.score%100 == 0:
+				dx -= acceleration
+	
 	def collision(self):
 		if len(pygame.sprite.spritecollide(self.dinosaure,self.lobstacles,False))>0:
 			return True
