@@ -5,10 +5,12 @@ from constantes import *
 
 
 class Dino (pygame.sprite.Sprite) :
-	def __init__(self, image,coordonnees) :
+	def __init__(self,coordonnees) :
 		pygame.sprite.Sprite.__init__(self)
-		self.image = image
-		self.rect = Rect(coordonnees,(image.get_width()-2*cst_tolerance,image.get_height()))
+		self.image = pygame.image.load(chemin+dinosaure).convert_alpha()
+		self.image = pygame.transform.smoothscale(self.image,(largeur_fenetre//10,hauteur_fenetre//10))
+		x,y = coordonnees
+		self.rect = Rect((x,y-self.image.get_height()),(self.image.get_width()-2*cst_tolerance,self.image.get_height()))
 		self.vitesse_y = 0
 		
 	def impulsion(self,limites=None) :
@@ -47,6 +49,27 @@ class Obstacle (pygame.sprite.Sprite) :
 		if self.rect.bottom<0 or self.rect.top>limites.get_height():
 			return True
 		return False
+
+class Niveau :
+	def __init__(self,fenetre):
+		## charger et  reduire l'image de fond
+		self.fond = pygame.image.load(chemin+fond).convert()
+		self.fond = pygame.transform.smoothscale(self.fond,(largeur_fenetre,hauteur_fenetre))
+		
+		## construire le dinosaure
+		self.dinosaure = Dino((largeur_fenetre//3,hauteur_fenetre))
+		
+		## construire les osbtacles
+		self.lobstacles = pygame.sprite.RenderUpdates()
+		
+		## recreer la fenetre
+		fenetre = pygame.display.set_mode((largeur_fenetre,hauteur_fenetre),RESIZABLE)
+		
+		## dessiner le fond
+		fenetre.blit(self.fond,(0,0))
+		## dessiner les objets
+		self.dinosaure.draw(fenetre)
+		self.lobstacles.draw(fenetre)
 
 
 if __name__ == "__main__" :
