@@ -67,6 +67,8 @@ class Niveau :
 		## construire une Font pour afficher le score
 		pygame.font.init()
 		self.font = pygame.font.Font(pygame.font.match_font(namefont),taille_lettres)
+		## vitesse interne
+		self.vitesse = dx
 		
 	def mise_a_jour(self,event,fenetre):
 		collision = False
@@ -87,15 +89,14 @@ class Niveau :
 		conteneur.blit(self.font.render(str(self.score),True,(0,0,0)),(5,5))
 		
 	def move(self,fenetre):
-		global dx
-		self.score -= dx//10
+		self.score -= self.vitesse//10
 		self.dinosaure.move(fenetre)
 		for o in self.lobstacles.sprites() :
-			o.move(dx)
+			o.move(self.vitesse)
 			if o.is_out(fenetre) :
 				self.lobstacles.remove(o)
 		if self.score%100 == 0:
-				dx -= acceleration
+				self.vitesse -= acceleration
 	
 	def collision(self):
 		if len(pygame.sprite.spritecollide(self.dinosaure,self.lobstacles,False))>0:
