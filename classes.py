@@ -35,10 +35,11 @@ class Dino (pygame.sprite.Sprite) :
 			conteneur.blit(self.image,(self.rect.left-cst_tolerance,self.rect.top))
 
 class Obstacle (pygame.sprite.Sprite) :
-	def __init__(self, image,coordonnees) :
+	def __init__(self) :
 		pygame.sprite.Sprite.__init__(self)
-		self.image = image
-		self.rect = Rect(coordonnees,image.get_size())		
+		self.image = pygame.image.load(chemin+obstacle).convert_alpha()
+		self.image = pygame.transform.smoothscale(self.image,(largeur_fenetre//15,hauteur_fenetre//15))
+		self.rect = Rect((largeur_fenetre,hauteur_fenetre-self.image.get_height()),self.image.get_size())		
 	
 	def move(self,x=0):
 		self.rect.move_ip(x,0)
@@ -70,9 +71,41 @@ class Niveau :
 		## dessiner les objets
 		self.dinosaure.draw(fenetre)
 		self.lobstacles.draw(fenetre)
+		
+	def mise_a_jour(self,event,fenetre):
+		collision = False
+		if event.type == QUIT:
+			return True
+		elif event.type == USEREVENT :
+			if randrange(2) ==0 and len(self.lobstacles.sprites()) < max_obstacles:
+				self.lobstacles.add(Obstacle())
+		elif event.type == KEYDOWN :
+			if event.key == K_UP :
+				self.dinosaure.impulsion()
+		return False
+	
+	def draw(self,conteneur):
+		conteneur.blit(self.fond,(0,0))
+		self.dinosaure.draw(conteneur)
+		self.lobstacles.draw(conteneur)
+		
+	def move(self,fenetre):
+		self.dinosaure.move(fenetre)
+		for o in self.lobstacles.sprites() :
+			o.move(dx)
+			if o.is_out(fenetre) :
+				self.lobstacles.remove(o)
+				
+	def collision(self):
+		if len(pygame.sprite.spritecollide(self.dinosaure,self.lobstacles,False))>0:
+			return True
+		else: 
+			return False
+		
 
 
 if __name__ == "__main__" :
+	print("hello")
 	pygame.display.init()
 	pygame.font.init()
 	
