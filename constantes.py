@@ -1,7 +1,7 @@
 import os
 
-local = os.getcwd()
-chemin = local[:local.rindex("/")]+"/src/"
+local = os.path.dirname(os.path.abspath(__file__))
+chemin = local+"/images/"
 
 fond = "fond.jpg"
 dinosaure = "dinosaure_1.png"
@@ -16,5 +16,5 @@ dx = -(largeur_fenetre//100)
 cst_tolerance = (largeur_fenetre//10)//3
 max_obstacles = 3
 taille_lettres = 50
-namefont = 'ComicSansMS'
+namefont = 'Arial'
 acceleration = 1

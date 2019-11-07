@@ -110,7 +110,7 @@ class Initial :
 		self.fond = pygame.Surface((largeur_fenetre,hauteur_fenetre))
 		self.fond.fill((255,255,255))
 		pygame.font.init()
-		self.font = pygame.font.Font(pygame.font.match_font(namefont),taille_lettres)
+		self.font = pygame.font.SysFont(namefont,taille_lettres)
 	
 	def draw(self,fenetre):
 		texte1 = self.font.render("meilleur score = "+str(self.highscore),True,(0,0,0))
