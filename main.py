@@ -7,7 +7,6 @@ if __name__ == "__main__" :
 	pygame.display.init()
 	
 	fenetre = pygame.display.set_mode((0,0))
-	
 	ecran_initial = Initial()
 	#ecran_initial.draw(fenetre)
 	#pygame.display.flip()
